@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+    <div>
+        <form action="" id="form" method="post">
+            <input id="url" type="text"  value="" placeholder="请在此输入下载链接">
+            <div>
+                <input id="img" type="text" style="width: 90px;" placeholder="请输入验证码">
+                <img id="chack" src="{:url('Index/chack')}" onclick="this.src=this.src+'?'+Math.random();" alt="captcha" style="width: 130px" />
+            </div>
+            <input type="button" onclick="sub()" value="提交" style="border: 0rem;">
+        </form>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+     function sub () {
+        var url = $("#url").val();
+        var chack = $("#img").val();
+
+
+         // 正则验证
+         var reg=/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
+         if(!reg.test(url)){
+             alert("您输入的不是正确的下载链接，请先核对链接");
+            return false;
+         }
+
+        //  //验证码
+        // $.post("{:url('index/chack_code')}",{code:chack},function (data) {
+        //     if (!data){
+        //         alert('验证码错误');
+        //         var ch = document.getElementById('chack');
+        //         ch.src=ch.src+'?'+Math.random();
+        //         return false;
+        //     }
+        // });
+
+        // //提交
+         $.ajax({
+             url:"{:url('index/Index/index')}",
+             type:"post",
+             data:{'url':url},
+             async:false,
+             success:function(data){
+                 alert(data.flag);
+                 console.log(data);
+             },
+             error:function(e){
+                 alert("错误！！");
+                 console.log(e);
+             }
+         });
+
+     }
+</script>
+</html>
